@@ -6,9 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainWindow extends JFrame {
-    private JTextField campoMonto;
-    private JTextField campoTNA;
-    private JTextField campoCuotas;
+    private JTextField montoField;
+    private JTextField tnaField;
+    private JTextField cuotasField;
     private JButton botonCalcular;
     private JTextArea resultado;
     private Calculos calc;
@@ -16,14 +16,14 @@ public class MainWindow extends JFrame {
     public MainWindow() {
         // Configuración de la ventana principal
         setTitle("Calculadora de Cuotas Alemanas");
-        setSize(500, 400);
+        setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         
         // Crear los componentes
-        campoMonto = new JTextField(10);
-        campoTNA = new JTextField(10);
-        campoCuotas = new JTextField(10);
+        montoField = new JTextField(10);
+        tnaField = new JTextField(10);
+        cuotasField = new JTextField(10);
         botonCalcular = new JButton("Calcular");
         resultado = new JTextArea(10, 30);
         resultado.setEditable(false);
@@ -34,11 +34,11 @@ public class MainWindow extends JFrame {
         JPanel panelInputs = new JPanel();
         panelInputs.setLayout(new GridLayout(4, 2));
         panelInputs.add(new JLabel("Monto:"));
-        panelInputs.add(campoMonto);
+        panelInputs.add(montoField);
         panelInputs.add(new JLabel("TNA (%):"));
-        panelInputs.add(campoTNA);
+        panelInputs.add(tnaField);
         panelInputs.add(new JLabel("Cuotas:"));
-        panelInputs.add(campoCuotas);
+        panelInputs.add(cuotasField);
         panelInputs.add(new JLabel(""));  // Placeholder
         panelInputs.add(botonCalcular);
 
@@ -65,19 +65,19 @@ public class MainWindow extends JFrame {
     private void calcular() {
         try {
             // Obtener los valores de los campos de texto
-            float monto = Float.parseFloat(campoMonto.getText());
-            float tna = Float.parseFloat(campoTNA.getText());
-            int cuotas = Integer.parseInt(campoCuotas.getText());
+            float monto = Float.parseFloat(montoField.getText());
+            float tna = Float.parseFloat(tnaField.getText());
+            int cuotas = Integer.parseInt(cuotasField.getText());
 
-            // Calcular las cuotas
-            float[] cuotasMensuales = calc.calcularCuotasAleman(monto, tna, cuotas);
+            // Calcular las cuotas alemanas
+            float[] cuotasAlemanas = calc.calcularCuotasAlemanas(monto, tna, cuotas);
 
             // Mostrar el resultado en el área de texto
-            StringBuilder resultadoTexto = new StringBuilder("Cuotas:\n");
-            for (int i = 0; i < cuotasMensuales.length; i++) {
-                resultadoTexto.append(String.format("Cuota %d: %.2f%n", i + 1, cuotasMensuales[i]));
+            StringBuilder resultadoText = new StringBuilder();
+            for (int i = 0; i < cuotasAlemanas.length; i++) {
+                resultadoText.append("Cuota ").append(i + 1).append(": ").append(String.format("%.2f", cuotasAlemanas[i])).append("\n");
             }
-            resultado.setText(resultadoTexto.toString());
+            resultado.setText(resultadoText.toString());
         } catch (NumberFormatException ex) {
             // Manejar el caso en que los inputs no sean números válidos
             resultado.setText("Por favor, ingrese valores válidos.");
@@ -94,4 +94,3 @@ public class MainWindow extends JFrame {
         });
     }
 }
-
